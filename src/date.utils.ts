@@ -1,0 +1,23 @@
+const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+// Primitive function to add days;
+export const addDay = (date: Date, days: number) => {
+  const newDate = new Date();
+  newDate.setDate(date.getDate() + days);
+  return newDate;
+}
+
+
+
+const discardTimeAndZoneInfo = (date: Date): number => {
+  return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+// a and b are javascript Date objects
+export const dateDiffInDays = (a: Date, b: Date): number => {
+  // Discard the time and time-zone information.
+  const utc1 = discardTimeAndZoneInfo(a);
+  const utc2 = discardTimeAndZoneInfo(b);
+
+  return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
