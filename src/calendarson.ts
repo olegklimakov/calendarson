@@ -1,8 +1,12 @@
 import { splitArray } from './split-array'
 import { addDay, dateDiffInDays } from './date.utils'
 
-export default class Calendarson {
+export class Calendarson {
+  generateRawArray() { return }
 
+  static generatePretty(from: Date, to: Date) {
+    return generateCalendar(from, to);
+  }
 }
 
 export interface Day {
@@ -20,14 +24,14 @@ export interface MonthWithWeek {
   num: number,
 }
 
-export const generateCalendar = (from: string, to: string) => {
-  const fromDate = new Date(from);
-  const toDate = new Date(to);
+const generateCalendar = (from: Date, to: Date) => {
+  const daysDiff = dateDiffInDays(from, to);
 
-  const daysDiff = dateDiffInDays(fromDate, toDate);
-  const days: Day[] = makeDateArray(fromDate, daysDiff + 1);
+  console.log('DIFF', daysDiff)
 
-  const year = splitToMonth(fromDate, days);
+  const days: Day[] = makeDateArray(from, daysDiff + 1);
+
+  const year = splitToMonth(from, days);
 
   return year.map(month => {
     return {
@@ -38,10 +42,17 @@ export const generateCalendar = (from: string, to: string) => {
 }
 
 const splitToMonth = (from: Date, days: Day[]): Month[] => {
+  console.log('FROM splitToMonth', from)
+  console.log(days)
+  console.log(from.getMonth())
+
   const firstMonth: { monthNum: number, days: Day[] } = {
     monthNum: from.getMonth(),
     days: []
   }
+
+  console.log(firstMonth)
+
 
   return days.reduce((acc, day) => {
     let lastMonth = acc[acc.length - 1];
@@ -60,8 +71,9 @@ const splitToMonth = (from: Date, days: Day[]): Month[] => {
 }
 
 const makeDateArray = (from: Date, length: number, disabled = false): Day[] => {
-  return new Array(length).fill(null).map((_, index) => {
 
+  console.log('ADD DAY 0 ', from, addDay(from, 0))
+  return new Array(length).fill(null).map((_, index) => {
     return {
       date: addDay(from, index),
       disabled,
@@ -72,6 +84,8 @@ const makeDateArray = (from: Date, length: number, disabled = false): Day[] => {
 const makeWeekCalendarArray = (month: Month): Day[][] => {
   let days: Day[] = [];
 
+
+  console.log(month)
   const from = month.days[0].date;
   const to = month.days[month.days.length - 1].date;
 
@@ -105,3 +119,9 @@ const makeWeekCalendarArray = (month: Month): Day[][] => {
 
   return splitArray(days, 7);
 }
+
+const from = new Date('2020-01-20');
+const to = new Date('2020-09-20');
+
+console.log(Calendarson.generatePretty(from, to))
+// console.log(makeDateArray(new Date(), 15));

@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "",
   "keywords": [],
-  "main": "dist/calendarson.umd.js",
-  "module": "dist/calendarson.es5.js",
+  "main": "dist/lib/calendarson.js",
+  "module": "dist/lib/calendarson.js",
   "typings": "dist/types/calendarson.d.ts",
   "files": [
     "dist"

@@ -1,4 +1,4 @@
-import DummyClass from "../src/calendarson"
+import { Calendarson } from "../src/calendarson"
 
 /**
  * Dummy test
@@ -9,6 +9,6 @@ describe("Dummy test", () => {
   })
 
   it("DummyClass is instantiable", () => {
-    expect(new DummyClass()).toBeInstanceOf(DummyClass)
+    expect(new Calendarson()).toBeInstanceOf(Calendarson)
   })
 })
