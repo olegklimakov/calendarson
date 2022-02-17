@@ -1,4 +1,4 @@
-export const splitArray = (array: any[], chunkSize: number) => {
+export const makeArrayChunks = (array: any[], chunkSize: number): any[][] => {
   return array.reduce((res, item, index) => {
     const chunkIndex = Math.floor(index/chunkSize)
 
@@ -9,5 +9,5 @@ export const splitArray = (array: any[], chunkSize: number) => {
     res[chunkIndex].push(item)
 
     return res
-  }, [])
+  }, []);
 }
