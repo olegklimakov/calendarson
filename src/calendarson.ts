@@ -25,6 +25,14 @@ export interface MonthWithWeek {
   year: number,
 }
 
+const generateRawMonth = (from: Date, to: Date): Day[][] => {
+  const daysDiff = dateDiffInDays(from, to);
+
+  const days: Day[] = makeDateArray(from, daysDiff + 1);
+
+  return splitToWeeks(from, to, days);
+}
+
 
 const generateMonthWithWeekCalendar = (from: Date, to: Date): MonthWithWeek[] => {
   const daysDiff = dateDiffInDays(from, to);
@@ -99,6 +107,40 @@ const makeWeekCalendarArray = (month: Month): Day[][] => {
   days = [
     ...days,
     ...month.days
+  ];
+
+  const toDay = from.getDay();
+  // add end of the week if the final day is not sunday
+  if (toDay !== 0) {
+    const length = 7 - toDay;
+    days = [
+      ...days,
+      ...makeDateArray(addDay(to, 1), length, true)
+    ]
+  }
+
+  return makeArrayChunks(days, 7);
+}
+
+const splitToWeeks = (from: Date, to: Date, externalDays: Day[]): Day[][] => {
+  let days: Day[] = [];
+
+  const fromDay = from.getDay();
+  // Case where to in the middle of the week. We need to add invisible or disabled days first
+  if (fromDay !== 1) {
+    // hack to fix sunday behaviour. It has 0 index, but should fill the rest with days.
+    const weekDay = fromDay || 7;
+    const length = weekDay - 1;
+    const start = addDay(from, -length);
+    days = [
+      ...makeDateArray(start, length, true),
+    ]
+  }
+
+  // fill normal case for from to "to" date
+  days = [
+    ...days,
+    ...externalDays
   ];
 
   const toDay = from.getDay();
